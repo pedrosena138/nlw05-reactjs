@@ -1,3 +1,23 @@
-export default function Home() {
-  return <h1>Index</h1>;
+class HomeProps {
+  episodes: object;
+}
+export default function Home({ episodes }: HomeProps) {
+  return (
+    <div>
+      <h1>Index</h1>
+      <p> {JSON.stringify(episodes)}</p>
+    </div>
+  );
+}
+
+export async function getStaticProps() {
+  const response = await fetch("http://localhost:3333/episodes");
+  const data = await response.json();
+
+  return {
+    props: {
+      episodes: data,
+    },
+    revalidate: 60 * 60 * 8,
+  };
 }
